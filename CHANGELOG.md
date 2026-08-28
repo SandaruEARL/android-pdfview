@@ -1,3 +1,6 @@
+## 3.2.20 (2026-08-28)
+* Fix blurry top of the first page when opening a PDF
+
 ## 3.2.19 (2026-08-20)
 * Fix pages being loaded even when scrolling
 * Fix recompute zone when zoom is different
