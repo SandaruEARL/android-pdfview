@@ -18,7 +18,7 @@
 buildscript {
     // Appending -SNAPSHOT is triggered by passing -Psnapshot to Gradle (used by the snapshot
     // publishing workflow), so the version doesn't need to be typed in by hand.
-    val baseVersionName = "3.2.19"
+    val baseVersionName = "3.2.20"
 
     extra.apply {
         set("libMinSdk", 23)
