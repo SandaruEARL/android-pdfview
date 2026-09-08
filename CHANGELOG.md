@@ -1,3 +1,20 @@
+## 3.2.20 (2026-08-28)
+* Fix blurry top of the first page when opening a PDF
+
+## 3.2.19 (2026-08-20)
+* Fix pages being loaded even when scrolling
+* Fix recompute zone when zoom is different
+* Fix min max zoom not being set properly
+
+## 3.2.18 (2026-08-14)
+* Add publishing to Reposilite and Maven Central
+
+## 3.2.17 (2026-08-07)
+* Add text selection support
+* Fix rendered zones not being refreshed when zooming
+* Update pdfiumandroid to its new Maven group
+* Update minSdk
+
 ## 3.2.16 (2026-04-16)
 * Update pdfium to 1.9.11
 

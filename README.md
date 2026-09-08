@@ -22,7 +22,7 @@ Add to _build.gradle_:
 allprojects {
     repositories {
         ...
-        maven { url 'https://jitpack.io' }'
+        maven { url 'https://maven.infomaniak.app/releases' }
         mavenCentral()
         ...
     }
@@ -35,14 +35,14 @@ or _build.gradle.kts_:
 dependencyResolutionManagement {
     repositories {
         ...
-        maven(url = "https://jitpack.io")
+        maven(url = "https://maven.infomaniak.app/releases")
         mavenCentral()
         ...
     }
 }
 ```
 
-`implementation 'com.github.Infomaniak:android-pdfview:3.2.13`
+`implementation("com.infomaniak.pdfview:android-pdfview:3.2.18")`
 
 ## ProGuard
 If you are using ProGuard, add following rule to proguard config file:
@@ -240,6 +240,11 @@ void setMinZoom(float zoom);
 void setMidZoom(float zoom);
 void setMaxZoom(float zoom);
 ```
+
+Pinch zoom is constrained to the `0.3f`–`100f` range. Requested minimum and maximum values are
+clamped to that range while processing a pinch gesture. If the resulting maximum is below the
+resulting minimum, the effective maximum is raised to the effective minimum, so the pinch range
+remains valid. The same behavior applies to `Configurator#zoom(float, float, float)`.
 
 ## Possible questions
 ### Why resulting apk is so big?
