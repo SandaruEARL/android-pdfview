@@ -1,5 +1,6 @@
 ## 3.2.20 (2026-08-28)
 * Fix blurry top of the first page when opening a PDF
+* Update project
 
 ## 3.2.19 (2026-08-20)
 * Fix pages being loaded even when scrolling
