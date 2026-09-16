@@ -1763,6 +1763,62 @@ public int getCharIndexAtCoord(int pageIndex, double x, double y, double toleran
     return pdfFile == null ? -1 : pdfFile.getCharIndexAtCoord(pageIndex, x, y, toleranceX, toleranceY);
 }
 
+
+    /**
+     * Screen-space (view coordinate) box of a single character, accounting for
+     * current zoom and scroll. Null if unavailable.
+     */
+    public RectF getCharBoxOnScreen(int pageIndex, int charIndex) {
+        if (pdfFile == null) {
+            return null;
+        }
+        RectF charBox = pdfFile.getCharBox(pageIndex, charIndex);
+        if (charBox == null) {
+            return null;
+        }
+        SizeF pageSize = pdfFile.getScaledPageSize(pageIndex, zoom);
+        PageOffsets offsets = computePageOffsets(pageIndex);
+        RectF mapped = pdfFile.mapRectToDevice(pageIndex, offsets.x, offsets.y,
+                (int) pageSize.getWidth(), (int) pageSize.getHeight(), charBox);
+        if (mapped == null) {
+            return null;
+        }
+        mapped.sort();
+        mapped.offset(currentXOffset, currentYOffset);
+        return mapped;
+    }
+
+    /**
+     * Screen-space boxes covering characters [start..end] on a page, one rect
+     * per visual line. Empty list if unavailable.
+     */
+    public java.util.List<RectF> getCharRangeBoxesOnScreen(int pageIndex, int start, int end) {
+        java.util.List<RectF> result = new ArrayList<>();
+        if (pdfFile == null || start < 0 || end < start) {
+            return result;
+        }
+        SizeF pageSize = pdfFile.getScaledPageSize(pageIndex, zoom);
+        PageOffsets offsets = computePageOffsets(pageIndex);
+        java.util.List<RectF> lineRects = buildLineSelectionRects(pageIndex, offsets.x, offsets.y,
+                (int) pageSize.getWidth(), (int) pageSize.getHeight(), start, end);
+        for (RectF rect : lineRects) {
+            RectF copy = new RectF(rect);
+            copy.offset(currentXOffset, currentYOffset);
+            result.add(copy);
+        }
+        return result;
+    }
+
+    /**
+     * Resolves a view-space touch point to {pageIndex, charIndex}.
+     * Returns null when nothing is near the point. Uses the exact same
+     * hit-testing the drag-to-select handles use.
+     */
+    public int[] getCharAtViewPoint(float x, float y) {
+        SelectionHit hit = getSelectionHit(x, y);
+        return hit == null ? null : new int[]{hit.page, hit.charIndex};
+    }
+
 /**
  * Maps a page-space rect to on-screen device coordinates for the given page's current layout.
  */
