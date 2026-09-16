@@ -1733,6 +1733,43 @@ public class PDFView extends RelativeLayout {
         return pdfFile.getPageLinks(page);
     }
 
+    /**
+ * Full text of a page. Empty string if the document isn't loaded.
+ */
+public String getPageText(int pageIndex) {
+    if (pdfFile == null) return "";
+    int count = pdfFile.getPageTextCount(pageIndex);
+    return count <= 0 ? "" : pdfFile.getPageText(pageIndex, 0, count);
+}
+
+/**
+ * Total character count on a page. 0 if the document isn't loaded.
+ */
+public int getPageTextLength(int pageIndex) {
+    return pdfFile == null ? 0 : pdfFile.getPageTextCount(pageIndex);
+}
+
+/**
+ * Bounding box (in PDF page coordinates) of a single character. Null if out of range.
+ */
+public RectF getCharBox(int pageIndex, int charIndex) {
+    return pdfFile == null ? null : pdfFile.getCharBox(pageIndex, charIndex);
+}
+
+/**
+ * Character index nearest the given page coordinate, or -1 if nothing is within tolerance.
+ */
+public int getCharIndexAtCoord(int pageIndex, double x, double y, double toleranceX, double toleranceY) {
+    return pdfFile == null ? -1 : pdfFile.getCharIndexAtCoord(pageIndex, x, y, toleranceX, toleranceY);
+}
+
+/**
+ * Maps a page-space rect to on-screen device coordinates for the given page's current layout.
+ */
+public RectF mapPageRectToDevice(int pageIndex, int pageX, int pageY, int pageWidth, int pageHeight, RectF pageRect) {
+    return pdfFile == null ? null : pdfFile.mapRectToDevice(pageIndex, pageX, pageY, pageWidth, pageHeight, pageRect);
+}
+
     public void enableTextSelection(boolean enabled) {
         textSelectionEnabled = enabled;
         if (!enabled) {
